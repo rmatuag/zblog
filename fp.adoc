@@ -1,0 +1,66 @@
+:document-title: Feature Update - Forgot Password
+= Feature Update - Forgot Password
+:toclevels: 2
+:leveloffset: +1
+:icons: font
+:showlinks:
+:source-highlighter: coderay
+:experimental:
+
+Coming with Zimbra 8.8.9 (Curie Release) we have the initial [red]_beta_ release of the forgot password feature.
+
+== How it works
+
+An user will be able to reset his/her password using the *Forgot Password* link on the login page. The pre-requisite for recovery is that user should have configured a recovery email address. The system will send a recovery email with a temporary code to this recovery email address, which will allow the user to login back to their email.
+
+[WARNING]
+Note that this is a beta release and should *not* be used in a production environment.
+
+This *forgot password* link will be disabled if external authentication is used. If the recovery email is not set, user will get an error message to contact the Administrator.
+
+== How to enable it
+This feature is controlled by the zimbraFeatureResetPasswordStatus attribute. This can be set either at the domain level, CoS level or at an individual user level.
+
+[NOTE]
+The domain level setting currently does not work and is a known issue.
+
+To enable the feature for at the class of service,
+
+[source,bash]
+----
+zmprov mc class_of_service zimbraFeatureResetPasswordStatus enabled
+----
+
+The attribute can accept the following values - enabled, suspended or disabled.
+
+The other attributes that have been added as part of this feature:
+
+* _zimbraResetPasswordRecoveryCode_ - Recovery code sent to recovery email address
+* _zimbraResetPasswordRecoveryCodeExpiry_ - Expiry time for password reset recovery code (Default: 10 minutes)
+* _zimbraRecoveryAccountVerificationData_ - A JSON encrypted token to contain all the data need to validate a verification code for email address.
+* _zimbraRecoveryAccountCodeValidity_ - Expiry time for recovery email code verification (Default: 1 day)
+* _zimbraPasswordRecoveryMaxAttempts_ - Maximum attempts for password recovery resend (Default: 10)
+* _zimbraFeatureResetPasswordSuspensionTime_ - time for which reset password feature is suspended (Default: 1 day)
+
+== Password Reset Flow
+
+1. User clicks `Forgot Password`.
+2. New view/dialog appears prompting the user for an email address in order to retrieve recovery email address.
+3. Submitting the email address from this view calls the internal API and the email address is validated.
++
+If an email address cannot be validated, an error message is sent. User has a limited number of attempts (configurable) before being locked out.
+4. Success of valid email address returns back a recovery email address that is obfuscated.
+5. User is asked to confirm, so as to send a recovery code to this obfuscated email address.
+6. If user continues by requesting a recovery code, a code is sent to the recovery email address while the view/dialog changes to receive code input. A timer is set and only limited attempts (configurable) will be acceptable.
+7. User enters code (8-digit alpha numeric) they should have received from the message sent to recovery email.
+8. If recovery code matches, an auth token or JWT, is generated and the recovery code is invalidated. If code doesn't match then user is given x number of attempts with X amount of time and is also given the option to resend the code to their recovery email address.
+9. User is offered an option to continue with this current web session.
+10. If user chooses to continue with session, then the user is authenticated and directed to their webmail.
+
+[information]
+Current implementation is only to help initiate a self-serve and secure account recovery. In the next few patches, the complete feature will be made available. 
+
+== Known Issues
+
+* After the forgot password flow, the _Change Password_ option still asks for the old password.
+* Currently functionality does not work with 2FA.
