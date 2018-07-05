@@ -3,7 +3,6 @@
 :toclevels: 2
 :leveloffset: +1
 :icons: font
-:showlinks:
 :source-highlighter: coderay
 :experimental:
 
@@ -14,7 +13,7 @@ Coming with Zimbra 8.8.9 (Curie Release) we have the initial [red]_beta_ release
 An user will be able to reset his/her password using the *Forgot Password* link on the login page. The pre-requisite for recovery is that user should have configured a recovery email address. The system will send a recovery email with a temporary code to this recovery email address, which will allow the user to login back to their email.
 
 [WARNING]
-Note that this is a beta release and should *not* be used in a production environment.
+Note that this is a beta release and should [red]*not* be used in a production environment.
 
 This *forgot password* link will be disabled if external authentication is used. If the recovery email is not set, user will get an error message to contact the Administrator.
 
@@ -57,10 +56,10 @@ If an email address cannot be validated, an error message is sent. User has a li
 9. User is offered an option to continue with this current web session.
 10. If user chooses to continue with session, then the user is authenticated and directed to their webmail.
 
-[information]
-Current implementation is only to help initiate a self-serve and secure account recovery. In the next few patches, the complete feature will be made available. 
+[NOTE]
+Current implementation is only to help initiate a self-serve and secure account recovery. In the next few patches, the complete feature will be made available.
 
 == Known Issues
 
-* After the forgot password flow, the _Change Password_ option still asks for the old password.
+* The _Change Password_ option still asks for the old password after a user has initiated the forgot password flow.
 * Currently functionality does not work with 2FA.
