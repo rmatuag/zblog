@@ -756,7 +756,7 @@ table.CodeRay td.code>pre{padding:0}
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Note that this is a beta release and should <strong>not</strong> be used in a production environment.
+Note that this is a beta release and should <strong class="red">not</strong> be used in a production environment.
 </td>
 </tr>
 </table>
@@ -858,8 +858,17 @@ The domain level setting currently does not work and is a known issue.
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p>Current implementation is only to help initiate a self-serve and secure account recovery. In the next few patches, the complete feature will be made available.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Current implementation is only to help initiate a self-serve and secure account recovery. In the next few patches, the complete feature will be made available.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -867,7 +876,7 @@ The domain level setting currently does not work and is a known issue.
 <div class="ulist">
 <ul>
 <li>
-<p>After the forgot password flow, the <em>Change Password</em> option still asks for the old password.</p>
+<p>The <em>Change Password</em> option still asks for the old password after a user has initiated the forgot password flow.</p>
 </li>
 <li>
 <p>Currently functionality does not work with 2FA.</p>
@@ -878,7 +887,7 @@ The domain level setting currently does not work and is a known issue.
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-05 23:38:50 +08
+Last updated 2018-07-06 00:21:59 +08
 </div>
 </div>
 </body>
