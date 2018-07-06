@@ -640,6 +640,9 @@ ABQ list is about controlling which devices (device type/id) are allowed to conn
 <div class="paragraph">
 <p>The Authorization Engine is not active, so after authenticating the user and checking its account status for safety reasons, the synchronization will continue. It is still possible to block specific devices but non-blocked devices will always be allowed to sync.</p>
 </div>
+<div class="paragraph">
+<p>Permissive mode means that all devices except those that are <em>marked blocked</em> are allowed.</p>
+</div>
 </li>
 <li>
 <p><strong>Interactive</strong> mode:</p>
@@ -658,7 +661,7 @@ notifying the user of its "Quarantine" status will be sent and the connection wi
 </ul>
 </div>
 <div class="paragraph">
-<p>Administrators can be notified at regular intervals, and every notification email will only include new Quarantined devices. They will then be able to allow or deny the synchronization for each device using the appropriate CLI tools.</p>
+<p>Interactive mode means that all not-allowed devices are moved to quarantine state and a notification is sent to the user. Administrators can be notified at regular intervals, and every notification email will only include new Quarantined devices. They will then be able to allow or deny the synchronization for each device using the appropriate CLI tools.</p>
 </div>
 </li>
 <li>
@@ -677,11 +680,17 @@ will be synchronized and a dummy email notifying the user of its "Blocked" statu
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Strict mode means that all not-allowed devices are moved to blocked state and notification sent to user.</p>
+</div>
 </li>
 <li>
 <p><strong>Disabled</strong> mode:</p>
 <div class="paragraph">
 <p>ABQ is disabled, no checks are triggered and no policies are enforced.</p>
+</div>
+<div class="paragraph">
+<p>Disabled mode means that all devices are allowed irrespective of whether they were allowed/quarantined/blocked.</p>
 </div>
 </li>
 </ul>
@@ -778,12 +787,75 @@ zxsuite mobile doStopService abq</code></pre>
 <p>When mode is Disabled ABQ service won&#8217;t automatically start and devices are always allowed to sync</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_abq_cli_examples">ABQ CLI Examples</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 40%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Feature</th>
+<th class="tableblock halign-left valign-top">Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set abqMode to one of 4 available modes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite config global set attribute abqMode value [Permissive|Interactive|Strict|Disabled]</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verify that abqService is running</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite mobile getServices</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Start abqService</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite mobile doStartService abq</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Start abqService</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite mobile doStopService abq</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List all devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite mobile abq list</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">List all devices with particular status</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite mobile ABQ list status Allowed</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Blocked</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quarantined</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Add/Import devices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite mobile ABQ add device_id deviceId status Allowed
+<br>
+zxsuite mobile ABQ add input_file /path/to/file status Allowed</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verify if synchronization for Quarantined device is allowed then devices will have status Allowed</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite mobile ABQ allow {device_id}</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Verify if synchronization for Quarantined device is blocked then devices will have status Blocked</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite mobile ABQ block {device_id}</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Set a status for single device</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">zxsuite mobile ABQ set {device_id} {Allowed|Blocked|Quarantined}</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-07-06 01:22:03 +08
+Last updated 2018-07-06 14:11:07 +08
 </div>
 </div>
 </body>
