@@ -5,13 +5,11 @@
 :icons: font
 :source-highlighter: coderay
 :experimental:
+:hide-uri-scheme:
 
 = Feature Update - Forgot Password
 
-[TIP]
-Add a section on the preferences options for the Forgot Password
-
-Coming with Zimbra 8.8.9 (Curie Release) we have the initial [red]_beta_ release of the forgot password feature.
+With Zimbra 8.8.9 (Curie Release) we have the initial [red]_beta_ release of the forgot password feature. Check the https://wiki.zimbra.com/wiki/Zimbra_Releases/8.8.9/P1[Release Notes] for more information on the patch release.
 
 == How it works
 
