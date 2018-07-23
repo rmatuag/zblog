@@ -6,6 +6,11 @@
 :source-highlighter: coderay
 :experimental:
 
+= Feature Update - Forgot Password
+
+[TIP]
+Add a section on the preferences options for the Forgot Password
+
 Coming with Zimbra 8.8.9 (Curie Release) we have the initial [red]_beta_ release of the forgot password feature.
 
 == How it works
@@ -13,7 +18,7 @@ Coming with Zimbra 8.8.9 (Curie Release) we have the initial [red]_beta_ release
 An user will be able to reset his/her password using the *Forgot Password* link on the login page. The pre-requisite for recovery is that user should have configured a recovery email address. The system will send a recovery email with a temporary code to this recovery email address, which will allow the user to login back to their email.
 
 [WARNING]
-Note that this is a beta release and should [red]*not* be used in a production environment.
+Note that this is a beta release and should [red]*not* be used in a production environment. Upgrade to `Patch 1` to test the reset password functionality.
 
 This *forgot password* link will be disabled if external authentication is used. If the recovery email is not set, user will get an error message to contact the Administrator.
 
@@ -30,7 +35,14 @@ To enable the feature for at the class of service,
 zmprov mc class_of_service zimbraFeatureResetPasswordStatus enabled
 ----
 
-The attribute can accept the following values - enabled, suspended or disabled.
+To disable the feature for at the class of service,
+
+[source,bash]
+----
+zmprov mc class_of_service zimbraFeatureResetPasswordStatus disabled
+----
+
+The attribute can accept the following values - `enabled`, `suspended` or `disabled`.
 
 The other attributes that have been added as part of this feature:
 
@@ -40,6 +52,16 @@ The other attributes that have been added as part of this feature:
 * _zimbraRecoveryAccountCodeValidity_ - Expiry time for recovery email code verification (Default: 1 day)
 * _zimbraPasswordRecoveryMaxAttempts_ - Maximum attempts for password recovery resend (Default: 10)
 * _zimbraFeatureResetPasswordSuspensionTime_ - time for which reset password feature is suspended (Default: 1 day)
+
+== Setup the Password Recovery E-Mail Address
+
+To enable the recovery of your lost password, you need to configure a `recovery email address`. Zimbra will then send you a recovery email with a temporary code that will allow you to login back and reset your forgotten password.
+
+Here is how it works …
+
+1. In the Zimbra Web Client, go to *menu:Preferences[Accounts > Primary Account Settings > Password Recovery Account Settings]*, and enter an email address to set as your password recovery email.
+2. You will receive an email at that address with a verification code. Enter the verification code in the given field to validate this email address. In case you do not get the code, check the junk mail or you have the option to resend the code.
+3. Once this email address is verified, you can start to use the reset password function.
 
 == Password Reset Flow
 
@@ -53,13 +75,13 @@ If an email address cannot be validated, an error message is sent. User has a li
 6. If user continues by requesting a recovery code, a code is sent to the recovery email address while the view/dialog changes to receive code input. A timer is set and only limited attempts (configurable) will be acceptable.
 7. User enters code (8-digit alpha numeric) they should have received from the message sent to recovery email.
 8. If recovery code matches, an auth token or JWT, is generated and the recovery code is invalidated. If code doesn't match then user is given x number of attempts with X amount of time and is also given the option to resend the code to their recovery email address.
-9. User is offered an option to continue with this current web session.
+9. User is offered an option to continue with this current web session. _Patch 1 Update_ - User has the option to reset the password.
 10. If user chooses to continue with session, then the user is authenticated and directed to their webmail.
+11. If the user chooses to reset the password, a new view is shown where the user can enter their new password. Once this is validated as per the password rules, the user is taken back to the login screen and the normal login flow can continue.
 
 [NOTE]
-Current implementation is only to help initiate a self-serve and secure account recovery. In the next few patches, the complete feature will be made available.
+8.8.9 P1 has the update to allow the user to reset their password during the initial reset flow. Without this patch, the user can only get secure access to their account.
 
 == Known Issues
 
-* The _Change Password_ option still asks for the old password after a user has initiated the forgot password flow.
-* Currently functionality does not work with 2FA.
+* Forgot password UI work is under development for 2FA enabled users.
